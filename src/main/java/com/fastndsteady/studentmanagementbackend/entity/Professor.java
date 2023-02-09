@@ -3,7 +3,7 @@ package com.fastndsteady.studentmanagementbackend.entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("professors")
+@Document("ProfessorInfo")
 public class Professor {
 	@Id
 	private String id;

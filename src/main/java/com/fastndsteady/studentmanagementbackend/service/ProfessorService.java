@@ -32,8 +32,8 @@ public class ProfessorService {
 	}
 	public void updateProfessor(Professor professor)
 	{
-		Professor p=professorRepo.findById(professor.getId());
-		professsorRepo.remove(p);
-		professorRepo.add(professor);
+		Professor p=professorRepo.findById(professor.getId()).get();
+		professorRepo.delete(p);
+		professorRepo.save(professor);
 	}
 }

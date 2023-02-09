@@ -3,7 +3,7 @@ package com.fastndsteady.studentmanagementbackend.entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("branches")
+@Document("BranchInfo")
 public class Branch {
 	@Id
 	private String id;
