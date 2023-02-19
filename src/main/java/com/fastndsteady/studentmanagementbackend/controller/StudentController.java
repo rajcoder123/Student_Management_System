@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fastndsteady.studentmanagementbackend.entity.Student;
+import com.fastndsteady.studentmanagementbackend.exception.EmptyInputException;
+import com.fastndsteady.studentmanagementbackend.exception.IdInUseException;
+import com.fastndsteady.studentmanagementbackend.exception.StudentNotFoundException;
 import com.fastndsteady.studentmanagementbackend.service.StudentService;
 
 @RestController
@@ -24,6 +27,10 @@ public class StudentController {
 	@GetMapping("/students")
 	@CrossOrigin(origins = "*")
 	public List<Student> getStudents() {
+		List<Student> students = (List<Student>) studentService.getStudents();
+		if (students.isEmpty()) {
+			throw new StudentNotFoundException("Students not found.");
+		}
 		return studentService.getStudents();
 	}
 
@@ -36,12 +43,27 @@ public class StudentController {
 	@PostMapping("/students")
 	@CrossOrigin(origins = "*")
 	public Student addStudent(@RequestBody Student student) {
-		return studentService.addStudent(student);
+		Student checkIfStudentWithIdExist = studentService.getStudent(student.getId());
+		if (checkIfStudentWithIdExist != null) {
+			throw new IdInUseException("Student already exist.");
+		}
+		else {
+			studentService.addStudent(student);
+			return student;
+		}
 	}
 
 	@DeleteMapping("/students/{id}")
 	@CrossOrigin(origins = "*")
 	public String deleteStudent(@PathVariable String id) {
+		if(id==null) {
+			throw new EmptyInputException("You need to provide ID of to be deleted. ID can not be Null.");
+		}
+		Student checkIfProjecttWithIdExist = studentService.getStudent(id);
+		if (checkIfProjecttWithIdExist==null) {
+			throw new StudentNotFoundException(
+					"Student can not be deleted because student with id: " + id + " does not exist.");
+		}
 		return studentService.deleteStudent(id);
 	}
    @PutMapping("/students/{id}")

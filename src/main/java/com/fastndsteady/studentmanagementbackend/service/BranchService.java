@@ -23,7 +23,7 @@ public class BranchService {
 	}
 
 	public Branch getBranch(String id) {
-		return branchRepo.findById(id).get();
+		return branchRepo.findById(id).orElse(null);
 	}
 
 	public String deleteBranch(String id) {
@@ -33,7 +33,7 @@ public class BranchService {
     
 	public void updateBranch(Branch branch)
 	{
-		Branch p=branchRepo.findById(branch.getId()).get();
+		Branch p = getBranch(branch.getId());
 		branchRepo.delete(p);
 		branchRepo.save(branch);
 	}

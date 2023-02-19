@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fastndsteady.studentmanagementbackend.entity.Branch;
 import com.fastndsteady.studentmanagementbackend.service.BranchService;
+import com.fastndsteady.studentmanagementbackend.exception.BranchNotFoundException;
+import com.fastndsteady.studentmanagementbackend.exception.EmptyInputException;
+import com.fastndsteady.studentmanagementbackend.exception.IdInUseException;
 
 @RestController
 public class BranchController {
@@ -24,6 +27,10 @@ public class BranchController {
 	@GetMapping("/branches")
 	@CrossOrigin(origins = "*")
 	public List<Branch> getBranchs() {
+		List<Branch> branch = (List<Branch>) branchService.getBranchs();
+		if (branch.isEmpty()) {
+			throw new BranchNotFoundException("Branch not found.");
+		}
 		return branchService.getBranchs();
 	}
 
@@ -36,12 +43,28 @@ public class BranchController {
 	@PostMapping("/branches")
 	@CrossOrigin(origins = "*")
 	public Branch addBranch(@RequestBody Branch branch) {
-		return branchService.addBranch(branch);
+		Branch checkIfBranchWithIdExist = branchService.getBranch(branch.getId());
+		if (checkIfBranchWithIdExist != null) {
+			throw new IdInUseException("Branch already exist.");
+		}
+		else {
+			branchService.addBranch(branch);
+			return branch;
+		}
 	}
 
 	@DeleteMapping("/branches/{id}")
 	@CrossOrigin(origins = "*")
 	public String deleteBranch(@PathVariable String id) {
+		if(id==null)
+		{
+			throw new EmptyInputException("You need to provide ID of Branch to be deleted. ID can not be Null.");
+		}
+		Branch checkIfBranchWithIdExist = branchService.getBranch(id);
+		if (checkIfBranchWithIdExist==null) {
+			throw new BranchNotFoundException(
+					"Branch can not be deleted because branch with id: " + id + " does not exist.");
+		}
 		return branchService.deleteBranch(id);
 	}
 	@PutMapping("/branches/{id}")

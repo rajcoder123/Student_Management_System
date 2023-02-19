@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.fastndsteady.studentmanagementbackend.entity.Professor;
+import com.fastndsteady.studentmanagementbackend.exception.EmptyInputException;
+import com.fastndsteady.studentmanagementbackend.exception.IdInUseException;
+import com.fastndsteady.studentmanagementbackend.exception.ProfessorNotFoundException;
 import com.fastndsteady.studentmanagementbackend.service.ProfessorService;
+
 
 @RestController
 public class ProfessorController {
@@ -24,6 +27,10 @@ public class ProfessorController {
 	@GetMapping("/professors")
 	@CrossOrigin(origins = "*")
 	public List<Professor> getProfessors() {
+		List<Professor> professor = (List<Professor>) professorService.getProfessors();
+		if (professor.isEmpty()) {
+			throw new ProfessorNotFoundException("Professor not found.");
+		}
 		return professorService.getProfessors();
 	}
 
@@ -36,12 +43,28 @@ public class ProfessorController {
 	@PostMapping("/professors")
 	@CrossOrigin(origins = "*")
 	public Professor addProfessor(@RequestBody Professor professor) {
-		return professorService.addProfessor(professor);
+		Professor checkIfProfessorWithIdExist = professorService.getProfessor(professor.getId());
+		if (checkIfProfessorWithIdExist != null) {
+			throw new IdInUseException("Professor already exist.");
+		}
+		else {
+			professorService.addProfessor(professor);
+			return professor;
+		}
 	}
 
 	@DeleteMapping("/professors/{id}")
 	@CrossOrigin(origins = "*")
 	public String deleteProfessor(@PathVariable String id) {
+		if(id==null)
+		{
+			throw new EmptyInputException("You need to provide ID of professor to be deleted. ID can not be 0.");
+		}
+		Professor checkIfProfessorWithIdExist = professorService.getProfessor(id);
+		if (checkIfProfessorWithIdExist==null) {
+			throw new ProfessorNotFoundException(
+				"Professor can not be deleted because project with id: " + id + " does not exist.");
+		}
 		return professorService.deleteProfessor(id);
 	}
   @PutMapping("/professors/{id}")
