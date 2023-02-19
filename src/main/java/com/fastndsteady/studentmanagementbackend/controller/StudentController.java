@@ -28,11 +28,13 @@ public class StudentController {
 	}
 
 	@GetMapping("/students/{id}")
+	@CrossOrigin(origins = "*")
 	public Student getStudents(@PathVariable String id) {
 		return studentService.getStudent(id);
 	}
 
 	@PostMapping("/students")
+	@CrossOrigin(origins = "*")
 	public Student addStudent(@RequestBody Student student) {
 		return studentService.addStudent(student);
 	}
@@ -43,6 +45,7 @@ public class StudentController {
 		return studentService.deleteStudent(id);
 	}
    @PutMapping("/students/{id}")
+   @CrossOrigin(origins = "*")
 	public void updateStudent(@PathVariable String id,@RequestBody Student student)
 	{
 	      studentService.updateStudent(student);

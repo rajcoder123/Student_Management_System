@@ -1,6 +1,7 @@
 package com.fastndsteady.studentmanagementbackend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,7 @@ public class LoginController {
     AuthenticationService service;
 	
 	@PostMapping("/admin/login")
+	@CrossOrigin(origins = "*")
 	public String adminAuthentication(@RequestBody User user)
 	{
 		if(service.adminAuthentication(user))
@@ -23,6 +25,7 @@ public class LoginController {
 	}
 	
 	@PostMapping("/student/login")
+	@CrossOrigin(origins = "*")
 	public String studentAuthentication(@RequestBody User user)
 	{
 		if(service.studentAuthentication(user))
@@ -32,6 +35,7 @@ public class LoginController {
 	}
 	
 	@PostMapping("/student/signup")
+	@CrossOrigin(origins = "*")
 	public String studentSignup(@RequestBody User user)
 	{  
 		if(service.findByName(user.getUserName()))

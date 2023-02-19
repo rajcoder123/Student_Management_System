@@ -28,11 +28,13 @@ public class BranchController {
 	}
 
 	@GetMapping("/branches/{id}")
+	@CrossOrigin(origins = "*")
 	public Branch getBranchs(@PathVariable String id) {
 		return branchService.getBranch(id);
 	}
 
 	@PostMapping("/branches")
+	@CrossOrigin(origins = "*")
 	public Branch addBranch(@RequestBody Branch branch) {
 		return branchService.addBranch(branch);
 	}
@@ -43,6 +45,7 @@ public class BranchController {
 		return branchService.deleteBranch(id);
 	}
 	@PutMapping("/branches/{id}")
+	@CrossOrigin(origins = "*")
 	public void updateBranch(@PathVariable String id,@RequestBody Branch branch)
 	{
 	    branchService.updateBranch(branch);

@@ -28,11 +28,13 @@ public class ProfessorController {
 	}
 
 	@GetMapping("/professors/{id}")
+	@CrossOrigin(origins = "*")
 	public Professor getProfessors(@PathVariable String id) {
 		return professorService.getProfessor(id);
 	}
 
 	@PostMapping("/professors")
+	@CrossOrigin(origins = "*")
 	public Professor addProfessor(@RequestBody Professor professor) {
 		return professorService.addProfessor(professor);
 	}
@@ -43,6 +45,7 @@ public class ProfessorController {
 		return professorService.deleteProfessor(id);
 	}
   @PutMapping("/professors/{id}")
+  @CrossOrigin(origins = "*")
 	public void updateProfessor(@PathVariable String id,@RequestBody Professor professor)
 	{
 	    professorService.updateProfessor(professor);
