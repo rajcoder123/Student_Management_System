@@ -23,7 +23,7 @@ public class ProfessorService {
 	}
 
 	public Professor getProfessor(String id) {
-		return professorRepo.findById(id).get();
+		return professorRepo.findById(id).orElse(null);
 	}
 
 	public String deleteProfessor(String id) {
@@ -32,7 +32,7 @@ public class ProfessorService {
 	}
 	public void updateProfessor(Professor professor)
 	{
-		Professor p=professorRepo.findById(professor.getId()).get();
+		Professor p=getProfessor(professor.getId());
 		professorRepo.delete(p);
 		professorRepo.save(professor);
 	}

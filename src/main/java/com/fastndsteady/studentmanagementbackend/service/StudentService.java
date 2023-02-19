@@ -32,7 +32,7 @@ public class StudentService {
 	}
 	public void updateStudent(Student student)
 	{
-		Student p=studentRepo.findById(student.getId()).get();
+		Student p=getStudent(student.getId());
 		studentRepo.delete(p);
 		studentRepo.save(student);
 	}
