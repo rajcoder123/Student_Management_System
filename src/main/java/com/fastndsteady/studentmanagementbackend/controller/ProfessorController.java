@@ -42,8 +42,8 @@ public class ProfessorController {
 	public String deleteProfessor(@PathVariable String id) {
 		return professorService.deleteProfessor(id);
 	}
-  @PutMapping("/professors")
-	public void updateProfessor(@RequestBody Professor professor)
+  @PutMapping("/professors/{id}")
+	public void updateProfessor(@PathVariable String id,@RequestBody Professor professor)
 	{
 	    professorService.updateProfessor(professor);
 	}

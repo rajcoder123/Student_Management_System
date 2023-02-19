@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document("ProfessorInfo")
 public class Professor {
 	@Id
+	
 	private String id;
 	private String name;
 	private String branchName;
